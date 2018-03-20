@@ -1,36 +1,26 @@
-function Random(selector) {
-    Component.call(this, selector);
+class Random extends Component {
+  constructor(selector) {
+    super(selector);
     this.random = [];
-}
-
-Random.prototype = Object.create(Component.prototype);
-Random.constructor = Random;
-
-Random.prototype.init = function() {
-    const self = this;
-
-    setInterval(function(){
-
-        axios.get('http://localhost:3000/random-numbers')
-            .then(function(response) {
-                self.random = response.data.data;
-                self.render();
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
-
-    }, 10000)
-
-
-};
-
-
-Random.prototype.render = function() {
+  }
+  init() {
+    setInterval(() => {
+      axios
+        .get('http://localhost:3000/random-numbers')
+        .then(response => {
+          this.random = response.data.data;
+          this.render();
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }, 10000);
+  }
+  render() {
     const container = this.getDOMElement();
-
     const listElem = document.createElement('li');
     listElem.classList.add('list-group-item');
     listElem.innerHTML = this.random;
     container.appendChild(listElem);
+  }
 }
