@@ -37,8 +37,24 @@ class Ranking extends Component {
     });
     number.displayed += counter.length;
           const li = this.getDOMElement('#numbers-ranking').children[number.id - 1];
-          li.innerHTML = `${number.id } was displayed ${number.displayed} times`;
+          if (number.displayed === 0 ) {
+              li.innerHTML = `${number.id } wasn't displayed`
+          }
+          else if(number.displayed === 1 ){
+            li.innerHTML = `${number.id } was displayed ${number.displayed} time`
+          } else {
+              li.innerHTML = `${number.id } was displayed ${number.displayed} times`
+          }
+          li.dataset.order = number.displayed;
     });
+        let lis = this.getDOMElement('#numbers-ranking').children;
+        lis = Array.prototype.slice.call(lis);
+        lis.sort(  (a, b) => { return b.dataset.order - a.dataset.order });
+        lis.forEach( (li) => {
+          let parent = li.parentNode;
+          let detachedLi = parent.removeChild(li);
+          parent.appendChild(detachedLi);
+        })
     }, 10000);
   }
  }
